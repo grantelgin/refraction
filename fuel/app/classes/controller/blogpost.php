@@ -35,18 +35,75 @@ class Controller_BlogPost extends Controller_Template{
 				$blogPost = Model_BlogPost::forge(array(
 					'title' => Input::post('title'),
 				));
-
 				if ($blogPost and $blogPost->save())
 				{
 					Session::set_flash('success', 'Added blogPost #'.$blogPost->id.'.');
 
-					Response::redirect('blogpost');
+					/* Response::redirect('blogpost'); */
 				}
 
+
+				
+				$entryType = Model_EntryType::forge(array(
+					'text' => Input::post('paragraph'),
+					'type' => 0
+				));
+				if ($entryType and $entryType->save())
+				{
+					Session::set_flash('success', 'Added entryType #'.$entryType->id.'.');
+					$postEntry = Model_PostEntry::forge(array(
+						'entryid' => $entryType->id,
+						'postid' => $blogPost->id,
+						'seq' => 0
+					));
+					
+					$postEntry->save();
+					
+
+					/* Response::redirect('entrytype'); */
+				}
+				$entryType = Model_EntryType::forge(array(
+					'text' => Input::post('tmabw'),
+					'type' => 1
+				));
+				if ($entryType and $entryType->save())
+				{
+					Session::set_flash('success', 'Added entryType #'.$entryType->id.'.');
+					$postEntry = Model_PostEntry::forge(array(
+						'entryid' => $entryType->id,
+						'postid' => $blogPost->id,
+						'seq' => 1
+					));
+					
+					$postEntry->save();
+					/* Response::redirect('entrytype'); */
+				}
+				$entryType = Model_EntryType::forge(array(
+					'text' => Input::post('ohShit'),
+					'type' => 2
+				));
+				if ($entryType and $entryType->save())
+				{
+					Session::set_flash('success', 'Added entryType #'.$entryType->id.'.');
+					
+					$postEntry = Model_PostEntry::forge(array(
+						'entryid' => $entryType->id,
+						'postid' => $blogPost->id,
+						'seq' => 2
+					));
+					
+					$postEntry->save();
+					/* Response::redirect('entrytype'); */
+				}
+				
+				
+				
 				else
 				{
 					Session::set_flash('error', 'Could not save blogPost.');
 				}
+				
+				Response::redirect('blogpost');
 			}
 			else
 			{
